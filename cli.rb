@@ -4,41 +4,39 @@
 require 'csv'
 require 'fileutils'
 
+# Adds local lib directory to Ruby load path
+$LOAD_PATH.push(File.expand_path(__dir__, 'lib'))
+
+require 'lib/parser/date_time'
+require 'lib/parser/phone_number'
+require 'lib/parser/text'
+
 CSV_INPUT_PATH = 'input.csv'
 OUTPUT_DIR = 'out'
 OUTPUT_FILE_NAME = 'output.csv'
 REPORT_FILE_NAME = 'report.txt'
-HEADER_ROW = [
-  'first_name',
-  'last_name',
-  'dob',
-  'member_id',
-  'effective_date',
-  'expiry_date',
-  'phone_number'
+
+Header = Struct.new(:column, :parser)
+
+HEADER_ROW_METADATA = [
+  Header.new('first_name', Parser::Text),
+  Header.new('last_name', Parser::Text),
+  Header.new('dob', Parser::DateTime),
+  Header.new('member_id', Parser::Text),
+  Header.new('effective_date', Parser::DateTime),
+  Header.new('expiry_date', Parser::Text),
+  Header.new('phone_number', Parser::Text),
 ]
-
-# @param [String] value
-#
-# @return [String]
-def transform(value)
-  value
-end
-
-# @param [Array<String>] row Input row of CSV data
-#
-# @return Array<String>
-def transform_row(row)
-  row.map { |value| transform(value) }
-end
 
 FileUtils.mkdir_p(OUTPUT_DIR)
 
 CSV.open(File.join(OUTPUT_DIR, OUTPUT_FILE_NAME), "wb") do |out|
-  out << HEADER_ROW
+  out << HEADER_ROW_METADATA.map(&:column)
 
   CSV.foreach(CSV_INPUT_PATH) do |row|
-    out << transform_row(row)
+    out << row.map.with_index do |value, index|
+      HEADER_ROW_METADATA[index].parser.parse(value)
+    end
   end
 end
 
