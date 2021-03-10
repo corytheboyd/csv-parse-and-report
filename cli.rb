@@ -4,8 +4,8 @@
 require 'csv'
 require 'fileutils'
 
-# Adds local lib directory to Ruby load path
-$LOAD_PATH.push(File.expand_path(__dir__, 'lib'))
+# Loads application environment
+require_relative 'config'
 
 require 'lib/parser/date_time'
 require 'lib/parser/phone_number'
