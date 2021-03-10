@@ -33,7 +33,13 @@ FileUtils.mkdir_p(OUTPUT_DIR)
 CSV.open(File.join(OUTPUT_DIR, OUTPUT_FILE_NAME), "wb") do |out|
   out << HEADER_ROW_METADATA.map(&:column)
 
+  header_consumed = false
   CSV.foreach(CSV_INPUT_PATH) do |row|
+    unless header_consumed
+      header_consumed = true
+      next
+    end
+
     out << row.map.with_index do |value, index|
       HEADER_ROW_METADATA[index].parser.parse(value)
     end
