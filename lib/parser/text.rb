@@ -1,8 +1,8 @@
 module Parser
   class Text
-    # @param [String] value
+    # @param [String | nil] value
     #
-    # @return [String]
+    # @return [String | nil]
     def self.parse(value)
       value
     end
