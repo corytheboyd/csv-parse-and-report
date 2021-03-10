@@ -5,7 +5,7 @@ require 'csv'
 require 'fileutils'
 
 # Loads application environment
-require_relative 'config'
+require_relative '../config'
 
 require 'lib/parser/date_time'
 require 'lib/parser/phone_number'
