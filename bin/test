@@ -1,0 +1,10 @@
+#!/usr/bin/env ruby
+# frozen_string_literal: true
+
+require "minitest/autorun"
+
+require_relative '../config'
+
+Dir.glob('./**/*.test.rb').each do |file|
+  require file
+end
