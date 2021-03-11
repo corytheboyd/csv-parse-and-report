@@ -17,12 +17,16 @@ module Parser
 
       # If there are not enough digits to form a phone number,
       # slice returns nil
-      return result if phone_digits.nil?
+      if phone_digits.nil?
+        result.reports << "failed to parse invalid phone number"
+        return result
+      end
 
       country_digits = all_digits.slice(0, all_digits.length - PHONE_NUMBER_LENGTH)
 
       # Default country code if not specified
       if country_digits.empty?
+        result.reports << "country code not present, assuming default: #{DEFAULT_COUNTRY_CODE}"
         country_digits = DEFAULT_COUNTRY_CODE
       end
 

@@ -19,27 +19,37 @@ Benny,Samson,1988-01-13T00:00:00+00:00,349102,2019-09-30T00:00:00+00:00,,+444255
 )
 
   EXPECTED_REPORT = %Q(row[5], column[effective_date]: assuming 20xx from ambiguous year
+row[7], column[phone_number]: country code not present, assuming default: 1
 row[5], column[effective_date]: assuming 20xx from ambiguous year
+row[7], column[phone_number]: country code not present, assuming default: 1
 row[3], column[dob]: assuming 19xx from ambiguous year
 row[5], column[effective_date]: assuming 20xx from ambiguous year
 row[3], column[dob]: assuming 19xx from ambiguous year
 row[5], column[effective_date]: assuming 20xx from ambiguous year
 row[5], column[effective_date]: assuming 20xx from ambiguous year
+row[7], column[phone_number]: country code not present, assuming default: 1
 row[5], column[effective_date]: assuming 20xx from ambiguous year
 row[6], column[expiry_date]: assuming 19xx from ambiguous year
+row[7], column[phone_number]: country code not present, assuming default: 1
 row[5], column[effective_date]: assuming 20xx from ambiguous year
 row[6], column[expiry_date]: assuming 19xx from ambiguous year
+row[7], column[phone_number]: country code not present, assuming default: 1
 row[3], column[dob]: assuming 19xx from ambiguous year
 row[5], column[effective_date]: assuming 20xx from ambiguous year
 row[6], column[expiry_date]: assuming 19xx from ambiguous year
+row[7], column[phone_number]: country code not present, assuming default: 1
 row[3], column[dob]: assuming 19xx from ambiguous year
 row[5], column[effective_date]: assuming 20xx from ambiguous year
+row[7], column[phone_number]: country code not present, assuming default: 1
 row[3], column[dob]: assuming Y/M/D instead of M/D/Y format
 row[5], column[effective_date]: assuming 20xx from ambiguous year
+row[7], column[phone_number]: country code not present, assuming default: 1
 row[3], column[dob]: assuming 19xx from ambiguous year
 row[5], column[effective_date]: assuming 20xx from ambiguous year
+row[7], column[phone_number]: country code not present, assuming default: 1
 row[3], column[dob]: assuming 19xx from ambiguous year
 row[5], column[effective_date]: assuming 20xx from ambiguous year
+row[7], column[phone_number]: country code not present, assuming default: 1
 row[3], column[dob]: assuming 19xx from ambiguous year
 row[5], column[effective_date]: assuming 20xx from ambiguous year
 )
