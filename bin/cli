@@ -24,7 +24,7 @@ HEADER_ROW_METADATA = [
   Header.new('dob', Parser::DateTimeParser),
   Header.new('member_id', Parser::TextParser),
   Header.new('effective_date', Parser::DateTimeParser),
-  Header.new('expiry_date', Parser::TextParser),
+  Header.new('expiry_date', Parser::DateTimeParser),
   Header.new('phone_number', Parser::TextParser),
 ]
 
