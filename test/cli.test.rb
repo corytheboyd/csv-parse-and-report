@@ -2,7 +2,6 @@ require 'tmpdir'
 
 class TestCli < Minitest::Test
   EXPECTED_OUTPUT = %Q(first_name,last_name,dob,member_id,effective_date,expiry_date,phone_number
-Jason,Bateman,2010-12-12T00:00:00+00:00,AB 0000,,,
 Brent,Wilson,1988-01-01T00:00:00+00:00,349090,2019-09-30T00:00:00+00:00,2000-09-30T00:00:00+00:00,+13038873456
 Antonio,Brown,1966-02-02T00:00:00+00:00,890887,2019-09-30T00:00:00+00:00,2000-09-30T00:00:00+00:00,+13033339987
 Jerry,Jones,1999-06-06T00:00:00+00:00,jkj3343,2016-08-04T00:00:00+00:00,2050-12-12T00:00:00+00:00,
@@ -18,49 +17,47 @@ Martin,Short,1988-01-12T00:00:00+00:00,349101,2019-09-30T00:00:00+00:00,,+140455
 Benny,Samson,1988-01-13T00:00:00+00:00,349102,2019-09-30T00:00:00+00:00,,+44425559884
 )
 
-  EXPECTED_REPORT = %Q(row[5], column[effective_date]: value not present
-row[6], column[expiry_date]: value not present
-row[7], column[phone_number]: value not present
+  EXPECTED_REPORT = %Q(row[2], column[effective_date]: value not present
+row[3], column[effective_date]: assuming 20xx from ambiguous year
+row[3], column[phone_number]: country code not present, assuming default: 1
+row[4], column[effective_date]: assuming 20xx from ambiguous year
+row[4], column[phone_number]: country code not present, assuming default: 1
+row[5], column[dob]: assuming 19xx from ambiguous year
 row[5], column[effective_date]: assuming 20xx from ambiguous year
+row[5], column[phone_number]: value not present
+row[6], column[dob]: assuming 19xx from ambiguous year
+row[6], column[effective_date]: assuming 20xx from ambiguous year
+row[7], column[effective_date]: assuming 20xx from ambiguous year
 row[7], column[phone_number]: country code not present, assuming default: 1
-row[5], column[effective_date]: assuming 20xx from ambiguous year
-row[7], column[phone_number]: country code not present, assuming default: 1
-row[3], column[dob]: assuming 19xx from ambiguous year
-row[5], column[effective_date]: assuming 20xx from ambiguous year
-row[7], column[phone_number]: value not present
-row[3], column[dob]: assuming 19xx from ambiguous year
-row[5], column[effective_date]: assuming 20xx from ambiguous year
-row[5], column[effective_date]: assuming 20xx from ambiguous year
-row[7], column[phone_number]: country code not present, assuming default: 1
-row[5], column[effective_date]: assuming 20xx from ambiguous year
-row[6], column[expiry_date]: assuming 19xx from ambiguous year
-row[7], column[phone_number]: country code not present, assuming default: 1
-row[5], column[effective_date]: assuming 20xx from ambiguous year
-row[6], column[expiry_date]: assuming 19xx from ambiguous year
-row[7], column[phone_number]: country code not present, assuming default: 1
-row[3], column[dob]: assuming 19xx from ambiguous year
-row[5], column[effective_date]: assuming 20xx from ambiguous year
-row[6], column[expiry_date]: assuming 19xx from ambiguous year
-row[7], column[phone_number]: country code not present, assuming default: 1
-row[3], column[dob]: assuming 19xx from ambiguous year
-row[5], column[effective_date]: assuming 20xx from ambiguous year
-row[6], column[expiry_date]: value not present
-row[7], column[phone_number]: country code not present, assuming default: 1
-row[3], column[dob]: assuming Y/M/D instead of M/D/Y format
-row[5], column[effective_date]: assuming 20xx from ambiguous year
-row[6], column[expiry_date]: value not present
-row[7], column[phone_number]: country code not present, assuming default: 1
-row[3], column[dob]: assuming 19xx from ambiguous year
-row[5], column[effective_date]: assuming 20xx from ambiguous year
-row[6], column[expiry_date]: value not present
-row[7], column[phone_number]: country code not present, assuming default: 1
-row[3], column[dob]: assuming 19xx from ambiguous year
-row[5], column[effective_date]: assuming 20xx from ambiguous year
-row[6], column[expiry_date]: value not present
-row[7], column[phone_number]: country code not present, assuming default: 1
-row[3], column[dob]: assuming 19xx from ambiguous year
-row[5], column[effective_date]: assuming 20xx from ambiguous year
-row[6], column[expiry_date]: value not present
+row[8], column[effective_date]: assuming 20xx from ambiguous year
+row[8], column[expiry_date]: assuming 19xx from ambiguous year
+row[8], column[phone_number]: country code not present, assuming default: 1
+row[9], column[effective_date]: assuming 20xx from ambiguous year
+row[9], column[expiry_date]: assuming 19xx from ambiguous year
+row[9], column[phone_number]: country code not present, assuming default: 1
+row[10], column[dob]: assuming 19xx from ambiguous year
+row[10], column[effective_date]: assuming 20xx from ambiguous year
+row[10], column[expiry_date]: assuming 19xx from ambiguous year
+row[10], column[phone_number]: country code not present, assuming default: 1
+row[11], column[dob]: assuming 19xx from ambiguous year
+row[11], column[effective_date]: assuming 20xx from ambiguous year
+row[11], column[expiry_date]: value not present
+row[11], column[phone_number]: country code not present, assuming default: 1
+row[12], column[dob]: assuming Y/M/D instead of M/D/Y format
+row[12], column[effective_date]: assuming 20xx from ambiguous year
+row[12], column[expiry_date]: value not present
+row[12], column[phone_number]: country code not present, assuming default: 1
+row[13], column[dob]: assuming 19xx from ambiguous year
+row[13], column[effective_date]: assuming 20xx from ambiguous year
+row[13], column[expiry_date]: value not present
+row[13], column[phone_number]: country code not present, assuming default: 1
+row[14], column[dob]: assuming 19xx from ambiguous year
+row[14], column[effective_date]: assuming 20xx from ambiguous year
+row[14], column[expiry_date]: value not present
+row[14], column[phone_number]: country code not present, assuming default: 1
+row[15], column[dob]: assuming 19xx from ambiguous year
+row[15], column[effective_date]: assuming 20xx from ambiguous year
+row[15], column[expiry_date]: value not present
 )
 
   def test_generate_output_csv

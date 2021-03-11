@@ -26,16 +26,16 @@ OptionParser.new do |opts|
   end
 end.parse!
 
-Header = Struct.new(:column, :parser)
+Header = Struct.new(:column, :parser, :required)
 
 HEADER_ROW_METADATA = [
-  Header.new('first_name', Parser::TextParser),
-  Header.new('last_name', Parser::TextParser),
-  Header.new('dob', Parser::DateTimeParser),
-  Header.new('member_id', Parser::TextParser),
-  Header.new('effective_date', Parser::DateTimeParser),
-  Header.new('expiry_date', Parser::DateTimeParser),
-  Header.new('phone_number', Parser::PhoneNumberParser),
+  Header.new('first_name', Parser::TextParser, true),
+  Header.new('last_name', Parser::TextParser, true),
+  Header.new('dob', Parser::DateTimeParser, true),
+  Header.new('member_id', Parser::TextParser, true),
+  Header.new('effective_date', Parser::DateTimeParser, true),
+  Header.new('expiry_date', Parser::DateTimeParser, false),
+  Header.new('phone_number', Parser::PhoneNumberParser, false),
 ]
 
 FileUtils.mkdir_p(options[:output_directory])
@@ -45,22 +45,38 @@ reporter = Reporter.new
 CSV.open(File.join(options[:output_directory], OUTPUT_FILE_NAME), "wb") do |out|
   out << HEADER_ROW_METADATA.map(&:column)
 
-  header_consumed = false
+  row_number = 0
   CSV.foreach(CSV_INPUT_PATH) do |row|
-    unless header_consumed
-      header_consumed = true
+    row_number += 1
+
+    if row_number == 1
       next
     end
 
-    out << row.map.with_index do |value, index|
-      result = HEADER_ROW_METADATA[index].parser.parse(value)
+    transformed_row = []
+    row.each_with_index do |value, index|
+      header = HEADER_ROW_METADATA[index]
+      result = header.parser.parse(value)
 
       result.reports.each do |report|
-        reporter.add_for_column_number(index + 1, HEADER_ROW_METADATA[index].column, report)
+        reporter.add_for_column_number(row_number, HEADER_ROW_METADATA[index].column, report)
       end
 
-      result.value
+      if header.required && result.value.nil?
+        break
+      end
+
+      transformed_row << result.value
     end
+
+    # If we early-exited because of a missing required value, do not write
+    # this row to the output CSV (though reports are still added to
+    # out/report.txt)
+    if transformed_row.length != HEADER_ROW_METADATA.length
+      next
+    end
+
+    out << transformed_row
   end
 end
 
