@@ -1,5 +1,5 @@
 module Parser
-  class PhoneNumber
+  class PhoneNumberParser
     PHONE_NUMBER_LENGTH = 10
     DEFAULT_COUNTRY_CODE = 1
 

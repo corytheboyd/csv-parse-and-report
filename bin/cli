@@ -7,9 +7,9 @@ require 'fileutils'
 # Loads application environment
 require_relative '../config'
 
-require 'lib/parser/date_time'
-require 'lib/parser/phone_number'
-require 'lib/parser/text'
+require 'lib/parser/date_time_parser'
+require 'lib/parser/phone_number_parser'
+require 'lib/parser/text_parser'
 
 CSV_INPUT_PATH = 'input.csv'
 OUTPUT_DIR = 'out'
@@ -19,13 +19,13 @@ REPORT_FILE_NAME = 'report.txt'
 Header = Struct.new(:column, :parser)
 
 HEADER_ROW_METADATA = [
-  Header.new('first_name', Parser::Text),
-  Header.new('last_name', Parser::Text),
-  Header.new('dob', Parser::DateTime),
-  Header.new('member_id', Parser::Text),
-  Header.new('effective_date', Parser::DateTime),
-  Header.new('expiry_date', Parser::Text),
-  Header.new('phone_number', Parser::Text),
+  Header.new('first_name', Parser::TextParser),
+  Header.new('last_name', Parser::TextParser),
+  Header.new('dob', Parser::DateTimeParser),
+  Header.new('member_id', Parser::TextParser),
+  Header.new('effective_date', Parser::DateTimeParser),
+  Header.new('expiry_date', Parser::TextParser),
+  Header.new('phone_number', Parser::TextParser),
 ]
 
 FileUtils.mkdir_p(OUTPUT_DIR)
