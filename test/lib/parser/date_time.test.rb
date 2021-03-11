@@ -16,5 +16,10 @@ class TestParser_DateTime < Minitest::Test
     assert_equal '1989-02-02T00:00:00+00:00', Parser::DateTimeParser.parse('2-2-89').value
     assert_equal '2012-03-03T00:00:00+00:00', Parser::DateTimeParser.parse('3/3/12').value
     assert_equal '2021-04-04T00:00:00+00:00', Parser::DateTimeParser.parse('4.4.21').value
+
+    # Ensure that reports are generated
+    assert_equal ['assuming Y/M/D instead of M/D/Y format'], Parser::DateTimeParser.parse('2000/1/1').reports
+    assert_equal ['assuming 19xx from ambiguous year'], Parser::DateTimeParser.parse('11/07/89').reports
+    assert_equal ['assuming 20xx from ambiguous year'], Parser::DateTimeParser.parse('04/20/20').reports
   end
 end

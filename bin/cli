@@ -66,6 +66,6 @@ end
 
 File.open(File.join(options[:output_directory], REPORT_FILE_NAME), 'wb') do |file|
   reporter.each do |report|
-    file << report
+    file << report + "\n"
   end
 end
