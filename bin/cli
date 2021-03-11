@@ -25,7 +25,7 @@ HEADER_ROW_METADATA = [
   Header.new('member_id', Parser::TextParser),
   Header.new('effective_date', Parser::DateTimeParser),
   Header.new('expiry_date', Parser::DateTimeParser),
-  Header.new('phone_number', Parser::TextParser),
+  Header.new('phone_number', Parser::PhoneNumberParser),
 ]
 
 FileUtils.mkdir_p(OUTPUT_DIR)
