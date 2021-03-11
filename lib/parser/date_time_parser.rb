@@ -1,5 +1,7 @@
 require 'date'
 
+require 'lib/parser/result'
+
 module Parser
   class DateTimeParser
     # Ideally, one would leverage DateTime::parse, but these inputs
@@ -7,9 +9,11 @@ module Parser
     #
     # @param [String | nil] value
     #
-    # @return [String | nil]
+    # @return [Parser::Result]
     def self.parse(value)
-      return nil unless value.is_a?(String)
+      result = Result.new
+
+      return result unless value.is_a?(String)
 
       # Assume a M/D/Y formatted date
       month, day, year = value.split(/[^0-9]+/).map(&:to_i)
@@ -32,7 +36,8 @@ module Parser
         year += 1900
       end
 
-      DateTime.new(year, month, day).iso8601
+      result.value = DateTime.new(year, month, day).iso8601
+      result
     end
   end
 end

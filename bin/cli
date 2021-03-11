@@ -11,6 +11,7 @@ require_relative '../config'
 require 'lib/parser/date_time_parser'
 require 'lib/parser/phone_number_parser'
 require 'lib/parser/text_parser'
+require 'lib/reporter'
 
 CSV_INPUT_PATH = 'input.csv'
 OUTPUT_FILE_NAME = 'output.csv'
@@ -39,6 +40,8 @@ HEADER_ROW_METADATA = [
 
 FileUtils.mkdir_p(options[:output_directory])
 
+reporter = Reporter.new
+
 CSV.open(File.join(options[:output_directory], OUTPUT_FILE_NAME), "wb") do |out|
   out << HEADER_ROW_METADATA.map(&:column)
 
@@ -50,11 +53,19 @@ CSV.open(File.join(options[:output_directory], OUTPUT_FILE_NAME), "wb") do |out|
     end
 
     out << row.map.with_index do |value, index|
-      HEADER_ROW_METADATA[index].parser.parse(value)
+      result = HEADER_ROW_METADATA[index].parser.parse(value)
+
+      result.reports.each do |report|
+        reporter.add_for_column_number(index + 1, HEADER_ROW_METADATA[index].column, report)
+      end
+
+      result.value
     end
   end
 end
 
 File.open(File.join(options[:output_directory], REPORT_FILE_NAME), 'wb') do |file|
-  file << 'TODO implement report!'
+  reporter.each do |report|
+    file << report
+  end
 end
