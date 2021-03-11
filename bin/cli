@@ -3,6 +3,7 @@
 
 require 'csv'
 require 'fileutils'
+require 'optparse'
 
 # Loads application environment
 require_relative '../config'
@@ -12,9 +13,17 @@ require 'lib/parser/phone_number_parser'
 require 'lib/parser/text_parser'
 
 CSV_INPUT_PATH = 'input.csv'
-OUTPUT_DIR = 'out'
 OUTPUT_FILE_NAME = 'output.csv'
 REPORT_FILE_NAME = 'report.txt'
+
+options = {
+  output_directory: 'out'
+}
+OptionParser.new do |opts|
+  opts.on('-o DIR', '--out-dir DIR', 'change output directory (defaults to ./out)') do |o|
+    options[:output_directory] = o
+  end
+end.parse!
 
 Header = Struct.new(:column, :parser)
 
@@ -28,9 +37,9 @@ HEADER_ROW_METADATA = [
   Header.new('phone_number', Parser::PhoneNumberParser),
 ]
 
-FileUtils.mkdir_p(OUTPUT_DIR)
+FileUtils.mkdir_p(options[:output_directory])
 
-CSV.open(File.join(OUTPUT_DIR, OUTPUT_FILE_NAME), "wb") do |out|
+CSV.open(File.join(options[:output_directory], OUTPUT_FILE_NAME), "wb") do |out|
   out << HEADER_ROW_METADATA.map(&:column)
 
   header_consumed = false
@@ -46,6 +55,6 @@ CSV.open(File.join(OUTPUT_DIR, OUTPUT_FILE_NAME), "wb") do |out|
   end
 end
 
-File.open(File.join(OUTPUT_DIR, REPORT_FILE_NAME), 'wb') do |file|
+File.open(File.join(options[:output_directory], REPORT_FILE_NAME), 'wb') do |file|
   file << 'TODO implement report!'
 end
