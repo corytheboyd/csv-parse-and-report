@@ -11,5 +11,8 @@ class TestParser_Text < Minitest::Test
     assert_equal 'This is some RAW text', Parser::TextParser.parse('This is some RAW text').value
     assert_equal 'trim   outer', Parser::TextParser.parse('   trim   outer   ').value
     assert_nil Parser::TextParser.parse(nil).value
+
+    # Ensure that reports are generated
+    assert_equal ['value not present'], Parser::TextParser.parse(nil).reports
   end
 end

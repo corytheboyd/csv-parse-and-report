@@ -25,5 +25,6 @@ class TestParser_PhoneNumber < Minitest::Test
     # Ensure that reports are generated
     assert_equal ['failed to parse invalid phone number'], Parser::PhoneNumberParser.parse('12345').reports
     assert_equal ['country code not present, assuming default: 1'], Parser::PhoneNumberParser.parse('1231231234').reports
+    assert_equal ['value not present'], Parser::PhoneNumberParser.parse(nil).reports
   end
 end

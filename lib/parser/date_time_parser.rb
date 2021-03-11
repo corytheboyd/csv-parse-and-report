@@ -13,7 +13,10 @@ module Parser
     def self.parse(value)
       result = Result.new
 
-      return result unless value.is_a?(String)
+      unless value.is_a?(String)
+        result.reports << "value not present"
+        return result
+      end
 
       # Assume a M/D/Y formatted date
       month, day, year = value.split(/[^0-9]+/).map(&:to_i)

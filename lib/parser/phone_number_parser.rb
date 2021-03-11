@@ -10,7 +10,11 @@ module Parser
     # @return [Parser::Result]
     def self.parse(value)
       result = Result.new
-      return result unless value.is_a?(String)
+
+      unless value.is_a?(String)
+        result.reports << "value not present"
+        return result
+      end
 
       all_digits = value.gsub(/[^0-9]/, '')
       phone_digits = all_digits.slice(-1 * PHONE_NUMBER_LENGTH, all_digits.length)

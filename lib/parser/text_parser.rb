@@ -8,7 +8,10 @@ module Parser
     def self.parse(value)
       result = Result.new
 
-      return result unless value.is_a?(String)
+      unless value.is_a?(String)
+        result.reports << "value not present"
+        return result
+      end
 
       result.value = value.strip
       result
